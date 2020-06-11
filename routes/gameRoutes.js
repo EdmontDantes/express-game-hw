@@ -1,13 +1,13 @@
 //gameRoutes.js routes
 const express = require('express');
-const games = require('../models/Games');
+const games = require('../models/GamesList');
 const router = express.Router();
 const { uuid } = require('uuidv4');
 
 
 //GetAllGames Get request not working yet 404
 router.get('/getAllGames', (req, res) => {
-    if(videoGames.length === 0) {
+    if(games.length === 0) {
         return res.status(400).json({ confirmation: 'failed', message: 'No video Games found'});
     }
     return res.status(200).json({ confirmation: 'success', games });
@@ -17,13 +17,15 @@ router.get('/getAllGames', (req, res) => {
 
 //GetSingleGame GET request not working yet 404 
 router.get('/getSingleGame/:id', (req, res) => {
-    const videoGame = games.filter(game => game.id === req.param.id)
-
+    const singleGame = games.filter(game => game.id === req.params.id);
+    console.log(singleGame);
+    console.log(req.params.id);
     if(games.length === 0) {
         return res.status(400).json({confirmation: 'failed', message: 'game not found'});
     }
 
-    return res.status(200).json({confirmation: 'success for single game retrieve', games})
+    return res.status(200).json({confirmation: 'success for single game retrieve', singleGame})
+    // return res.send(req.params.id);
 });
 
 
@@ -39,9 +41,9 @@ router.post('/createGame', (req, res) => {
     }
 
     const game = games.filter((game) => {
-        game.name === req.body.name
+        return game.name === req.body.name
     });
-
+    console.log(game);
     if(game.length > 0) {
         return res.status(404).json({ confirmation: 'fail', message: 'Video game is already in the library try another'})
     }
@@ -55,7 +57,7 @@ router.post('/createGame', (req, res) => {
     newGames.playtime = req.body.playtime;
 
     games.push(newGames);
-
+    console.log(games);
     return res.status(200).json({ message: 'game inputted into database', games});
 })
 
@@ -66,7 +68,11 @@ router.put('/updateGame/:id', (req, res) => {
     let updatedGame = req.body;
 
     if(game.length > 0) {
-        game.forEach((game) => {
+        return res.status(404).json({confirmation: 'failed', message: 'game not found'})
+    }
+
+
+        games.forEach((game) => {
             if(game.id === req.params.id) {
                 game.name === updatedGame.name ? updatedGame.name : game.name;
                 game.description === updatedGame.description ? updatedGame.description : game.description;
@@ -74,7 +80,7 @@ router.put('/updateGame/:id', (req, res) => {
                 game.playtime === updatedGame.yearReleased ? updatedGame.playtime : game.playtime;
             }
         });
-    }
+    
 
     //return res with updated games
 
@@ -85,7 +91,7 @@ router.put('/updateGame/:id', (req, res) => {
 router.delete('/deleteGame/:id', (req, res) => {
     const game = games.filter(game => game.id !== req.params.id)
 
-    return res.status(200).json({ message: 'Video Game Deleted', games})
+    return res.status(200).json({ message: 'Video Game Deleted', game})
 });
 
 module.exports = router;

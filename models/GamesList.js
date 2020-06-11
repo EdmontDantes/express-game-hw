@@ -1,5 +1,5 @@
 //videoGames.js models
-const { uuid } = require('uuidv4');
+// const { uuid } = require('uuidv4');
 
 let games = [
     { id: 1, 
@@ -16,7 +16,7 @@ let games = [
     playtime: 10
     },
 
-    { id: `${uuid}`, 
+    { id: 3, 
     name: 'Elder Scrolls: Skyrim', 
     description: 'great open world moddable to infinity game', 
     yearReleased: 2011, 
@@ -30,7 +30,7 @@ let games = [
     playtime: 9
     },
     
-    { id: '5', 
+    { id: 5, 
     name: 'Dungeon Keeper', 
     description: 'The most epic god game of the 90s', 
     yearReleased: 1997, 
